@@ -1,0 +1,96 @@
+<%= javascript_include_tag '/javascripts/recommender2/bp_recommender2.js', 'application' %>
+<style type="text/css">
+  #recommendationResults {
+    width: 400px;
+    margin: 0;
+    overflow: auto;
+    border: 1px solid;
+    padding: 2px;
+    text-align: justify;
+    background: transparent;
+  }
+</style>
+
+<div style="padding: 1em;">
+    <h1>Ontology Recommender</h1>
+
+    <p style="max-width:850px;">
+	Get recommendations for the most relevant ontologies based on an excerpt from a biomedical text or a list of keywords.             
+    </p>
+    
+    <div style="width:650px">
+	<!-- Input type -->
+	<div style="width:320px;margin-bottom:0px;float:left">
+	    <h3>Input</h3>
+	    <p id='display_options' style='padding-left: 10px; margin-bottom: 0;'>
+		<input type='radio' id="radio_it_text" autocomplete='off' checked='checked' name='input_type' value='1' />
+		<label style="margin-right:8px">Text</label>
+		<input type='radio' id="radio_it_keywords" autocomplete='off' name='input_type' value='2' />
+		<label>Keywords (separated by commas)</label>
+	    </p>
+	</div>
+    
+	<!-- Output type -->
+	<div style="width: 320px;margin-bottom:0px;float:right">
+	    <h3>Output</h3>
+	    <p id='display_options' style='padding-left: 10px; margin-bottom: 0;'>
+		<input type='radio' id="radio_ot_single" autocomplete='off' checked='checked' name='output_type' value='1' />
+		<label style="margin-right:8px">Ontologies</label>
+		<input type='radio' id="radio_ot_sets" autocomplete='off' name='output_type' value='2' />
+		<label>Ontology sets</label>
+	    </p>
+	</div>
+    </div>
+    <div style="clear:both"></div>
+    
+    <!-- Advanced options -->
+    <div id="advanced_options">
+	<h3 style="margin-top: 10px">Weights configuration</h3>
+	<div style="padding-left: 10px;">
+	    <label style="margin-right:5px">Coverage</label><input style="width:40px; margin-right: 10px; text-align: center" type="number" id="input_wc" min="0.1" max="1" step="0.1" value="0.6">
+	    <label style="margin-right:5px">Specialization</label><input style="width:40px; margin-right: 10px; text-align: center" type="number" id="input_ws" min="0" max="1" step="0.1" value="0.2">
+	    <label style="margin-right:5px">Acceptance</label><input style="width:40px; margin-right: 10px; text-align: center" type="number" id="input_wa" min="0" max="1" step="0.1" value="0.2">	    
+	</div>
+	<h3 style="margin-top: 10px">Ontology sets</h3>
+	<div style="padding-left: 10px;">
+	    <label style="margin-right:5px">Maximum number of ontologies per set</label><input style="width:30px; margin-right: 10px;" type="number" id="input_max_ontologies" min="2" max="4" step="1" value="3">	    
+	</div>
+    </div>
+    
+    <!-- Sample text/keywords -->
+    <div style="width:650px;margin-left:0px;margin-top:10px">
+	<div style="width:60%;float:left">
+	      <a href="javascript:void(0);" id="insert_text_link" style="font-size: 8pt; text-decoration: none; margin:0px 5px 0px 0px">insert sample text</a>
+	      <a href="javascript:void(0);" id="insert_keywords_link" style="font-size: 8pt; text-decoration: none; margin:0px">insert sample keywords</a>	  
+	</div>
+	<div style="width:40%;text-align:right;float:right">
+	    <a href="javascript:void(0);" id="show_advanced_options_link" style="font-size: 8pt; text-decoration: none; margin:0px">show advanced options</a>
+	    <a href="javascript:void(0);" id="hide_advanced_options_link" style="font-size: 8pt; text-decoration: none; margin:0px">hide advanced options</a>
+	</div>
+    </div>
+    <div style="clear:both;margin-bottom:2px"></div>
+    
+    <!-- Input text area --> 
+    <div>
+	<textarea id="input_text" name="input_text" class="help_text" style="box-shadow: 0 0 3px gray; padding: 5px; width: 640px; height: 200px"></textarea>
+    </div>     
+    
+    <!-- Recommender results -->
+    <div id="recommender_results"
+	 style="display:none; overflow-y:auto; box-shadow: 0 0 3px gray; padding: 5px; width: 640px; height: 200px"></div>    
+
+    <!-- Get recommendations / Edit Input buttons -->
+    <input id="recommender_button" type="button" style="margin-top: 10px;" class="link_button ui-button ui-widget ui-state-default ui-corner-all" value="Get Recommendations" />
+    <input id="edit_button" type="button" style="display: none;margin-top: 10px;" class="link_button ui-button ui-widget ui-state-default ui-corner-all" value="Edit Input" />    
+    
+    <span class="recommender_spinner" style="display: none;"><img src="/images/spinners/spinner_000000_16px.gif" style="vertical-align: text-bottom;"></span>
+    <br /><br />
+    <span id="not_text_error" style="display:none;color: red; margin-bottom: 7px; margin-top:6px">Please paste some text or keywords to use in calculating ontology recommendations<br></span>
+    <span id="sum_weights_error" style="color: red">The sum of the weights must be 1<br></span>
+    <span id="range_weights_error" style="color: red">All the weights must be between 0 and 1<br></span>
+    <span id="max_ontologies_error" style="color: red">The maximum ontologies per set must be between 2 and 4<br></span>
+    <br />
+    <h2 id='results_header'></h2>
+    <div id="results"></div>
+    <div id="no_results" style="margin-left: 3px"><span>No recommendations found</p></div>
+</div>
