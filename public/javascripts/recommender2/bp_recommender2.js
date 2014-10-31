@@ -115,14 +115,16 @@ function getRecommendations() {
   }
   // Check sum of weights
   var wc = parseFloat($("#input_wc").val());
-  var ws = parseFloat($("#input_ws").val());
   var wa = parseFloat($("#input_wa").val());
-  if (wc + ws + wa != 1) {
+  var wd = parseFloat($("#input_wd").val());
+  var ws = parseFloat($("#input_ws").val());
+ 
+  if (wc + ws + wa + wd != 1) {
     $("#sum_weights_error").show();
     errors = true;
   }
   // Check range of weights
-  if ((wc < 0)||(wc > 1)||(ws < 0)||(ws > 1)||(wa < 0)||(wa > 1)) {    
+  if ((wc < 0)||(wc > 1)||(wa < 0)||(wa > 1)||(wd < 0)||(wd > 1)||(ws < 0)||(ws > 1)) {    
     $("#range_weights_error").show();
     errors = true;
   }
@@ -150,8 +152,9 @@ function getRecommendations() {
       params.outputType = 2; //ontology sets
     // Weights
     params.wc = $('#input_wc').val();
-    params.ws = $('#input_ws').val();
     params.wa = $('#input_wa').val();
+    params.wd = $('#input_wd').val();
+    params.ws = $('#input_ws').val();
     // Maximum number of ontologies per set (only for the "ontology sets" output)
     params.maxOntologiesInSet = $('#input_max_ontologies').val();    
     $.ajax({    
@@ -173,8 +176,9 @@ function getRecommendations() {
                            + '<th>Ontology</th>'
                            + '<th>Final score</th>'
                            + '<th>Coverage <br>score</th>'
-                           + '<th>Specialization <br>score</th>'
                            + '<th>Acceptance <br>score</th>'
+                           + '<th>Detail <br>score</th>'
+                           + '<th>Specialization <br>score</th>'                           
                            //+ '<th>Terms</th>'
                            + '<th>Annotations</th>'
                            + '<th>Highlight <br>annotations</th>'
@@ -194,9 +198,10 @@ function getRecommendations() {
     
               var finalScore = data.result[i].finalScore * 100;
               var coverageScore = data.result[i].coverageResult.normalizedScore * 100;
-              var specializationScore = data.result[i].specializationResult.normalizedScore * 100;
               var acceptanceScore = data.result[i].acceptanceResult.score * 100;
-    
+              var detailScore = data.result[i].detailResult.score * 100;
+              var specializationScore = data.result[i].specializationResult.normalizedScore * 100;
+              
               //create row
               var row = '<tr><td>' + position + '</td><td>';
                     
@@ -208,8 +213,9 @@ function getRecommendations() {
   
               row += '<td><div style="width:120px"><div style="text-align:left;width:' + finalScore.toFixed(0) + '%;background-image:url(/images/new/gradient_120px_2.png);border-style:solid;border-width:1px;border-color:#234979">' + finalScore.toFixed(1) + '</div></div>' + '</td>'
                           + '<td><div style="width:120px"><div style="text-align:left;width:' + coverageScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + coverageScore.toFixed(1) + '</div></div>' + '</td>'
-                          + '<td><div style="width:120px"><div style="text-align:left;width:' + specializationScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + specializationScore.toFixed(1) + '</div></div>' + '</td>'
                           + '<td><div style="width:120px"><div style="text-align:left;width:' + acceptanceScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + acceptanceScore.toFixed(1) + '</div></div>' + '</td>'
+                          + '<td><div style="width:120px"><div style="text-align:left;width:' + detailScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + detailScore.toFixed(1) + '</div></div>' + '</td>'
+                          + '<td><div style="width:120px"><div style="text-align:left;width:' + specializationScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + specializationScore.toFixed(1) + '</div></div>' + '</td>'                          
                           //+ '<td>' + terms + '</td>'
                           + '<td>' + data.result[i].coverageResult.annotations.length + '</td>'
                           + '<td>' + '<div style="text-align:center"><input style="vertical-align:middle" id="chk' + i + '" type="checkbox"/></div>'
