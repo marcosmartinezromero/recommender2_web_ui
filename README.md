@@ -1,5 +1,5 @@
 #Recommender-2 Web User Interface
-This is a Ruby on Rails User Interface for the 2014 version of the [Ontology Recommender Web Service](https://github.com/marcosmartinezromero/recommender2_web_service).
+This is a Ruby on Rails User Interface for the [Ontology Recommender Web Service](https://github.com/marcosmartinezromero/recommender2_web_service).
 
 ##Software versions
 - Ruby 1.9.3
