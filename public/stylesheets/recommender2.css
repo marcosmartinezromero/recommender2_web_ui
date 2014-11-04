@@ -1,0 +1,81 @@
+#container {
+    padding: 1em;
+}
+
+#basicOptions {
+    width: 650px;
+}
+
+.optionsBox {
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+.optionsBox input {
+    width:40px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.optionsBoxLeft {
+    width: 300px;
+    margin-bottom: 0px;
+    float: left;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+.optionsBoxRight {
+    width: 320px;
+    margin-bottom: 0px;
+    float: right;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+label {
+    margin-right: 8px
+}
+
+.optionsLinks {
+    width: 650px;
+    margin-left: 0px;
+    margin-top: 10px;
+}
+
+.optionsLinksLeft {
+   width: 60%;
+   float: left;
+}
+
+.optionsLinksRight {
+    width: 40%;
+    text-align: right;
+    float: right;
+}
+
+.optionsLinks a {
+   font-size: 8pt;
+   text-decoration: none;
+   margin:0px;
+}
+
+#inputText {
+    box-shadow: 0 0 3px gray;
+    padding: 5px;
+    width: 640px;
+    height: 200px;
+}
+
+#recommenderResults {
+    display:none;
+    overflow-y:auto;
+    box-shadow: 0 0 3px gray;
+    padding: 5px;
+    width: 640px;
+    height: 200px;
+}
+
+.notTextError, .sumWeightsError, .rangeWeightsError, .maxOntologiesError {
+    color: red;
+}

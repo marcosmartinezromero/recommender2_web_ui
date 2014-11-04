@@ -1,71 +1,67 @@
 jQuery(document).ready(function() {  
-  $("#recommender_button").click(getRecommendations);    
-  $("#insert_text_link").click(insertSampleText);
-  $("#insert_keywords_link").click(insertSampleKeywords);
-  $("#show_advanced_options_link").click(showAdvancedOptions);
-  $("#hide_advanced_options_link").click(hideAdvancedOptions);
-  
-  $('input[name=input_type]:radio').change(function () {
+  $("#recommenderButton").click(getRecommendations);    
+  $("#insertTextLink").click(insertSampleText);
+  $("#insertKeywordsLink").click(insertSampleKeywords);
+  $("#showAdvancedOptionsLink").click(showAdvancedOptions);
+  $("#hideAdvancedOptionsLink").click(hideAdvancedOptions);
+  $("input[name=input_type]:radio").change(function () {
     enableEdition()});
-  
-  $('input[name=output_type]:radio').change(function () {
+  $("input[name=output_type]:radio").change(function () {
     enableEdition()});
-  
-  $('#input_wc').click(enableEdition);
-  $('#input_ws').click(enableEdition);
-  $('#input_wa').click(enableEdition);
-  $('#input_max_ontologies').click(enableEdition);
-  
-  $("#advanced_options").hide();
-  $("#hide_advanced_options_link").hide();
-  $("#no_results").hide();
+  $("#input_wc").click(enableEdition);
+  $("#input_ws").click(enableEdition);
+  $("#input_wa").click(enableEdition);
+  $("#input_max_ontologies").click(enableEdition);
+  $("#advancedOptions").hide();
+  $("#hideAdvancedOptionsLink").hide();
+  $("#noResults").hide();
+  $(".recommenderSpinner").hide();
+  $("#editButton").hide();
   hideValidationMessages();
-  
 });
 
 function enableEdition() {
-     $("#input_text").show();
-     $("#recommender_results").hide();
-     $('#results_header').empty();
-     $('#results').empty();
-     $("#edit_button").hide();
-     $("#recommender_button").show();
-    $('input[name=input_type]').attr("disabled",false);
-  }
+     $("#inputText").show();
+     $("#recommenderResults").hide();
+     $("#resultsHeader").empty();
+     $("#results").empty();
+     $("#editButton").hide();
+     $("#recommenderButton").show();
+    $("input[name=input_type]").attr("disabled",false);
+}
 
 function insertSampleText() {
   enableEdition();
   var text = 'Primary treatment of DCIS now includes 3 options: lumpectomy without lymph node surgery plus whole breast radiation (category 1); total mastectomy with or without sentinel node biopsy with or without reconstruction (category 2A); lumpectomy without lymph node surgery without radiation (category 2B). Workup for patients with clinical stage l, llA, llB, or T3,N1,M0 disease was reorganized to distinguish optional additional studies from those recommended for all of these patients. Recommendation for locoregional treatment for patients with clinical stage l, llA, llB, or T3,N1,M0 disease with 1-3 positive axillary nodes following total mastectomy was changed from "Consider" to "Strongly consider" postmastectomy radiation therapy. For patients with hormone receptor-positive, HER2-negative tumors that are 0.6-1.0 cm and moderately/poorly differentiated or with unfavorable features, or > 1 cm, the recommendation for use of a 21-gene RT-PCR assay (category 2B) was added to the systemic adjuvant treatment decision pathway as an option for guiding chemotherapy treatment decisions. Systemic adjuvant treatment for patients with tubular or colloid tumors that are hormone receptor-positive and node-positive was changed from "adjuvant hormonal therapy + adjuvant chemotherapy" to "adjuvant hormonal therapy adjuvant chemotherapy". For hormone receptor-positive, node negative tubular/colloid tumors that are 1 cm, the recommendation for use or consideration of adjuvant chemotherapy was removed. The heading for workup for patients with locally advanced invasive cancer was modified to specify "Noninflammatory" disease and reorganized to distinguish optional additional studies from those recommended for all of these patients.';
-  jQuery("#input_text").focus();
-  jQuery("#input_text").val(text);
-  $("#not_text_error").hide();
-  $("#radio_it_text").prop("checked", true);
-  
+  jQuery("#inputText").focus();
+  jQuery("#inputText").val(text);
+  $(".notTextError").hide();
+  $("#radioItText").prop("checked", true);
 }
 
 function insertSampleKeywords() {
   enableEdition();
   var text = "Backpain, White blood cell, Carcinoma, Cavity of stomach, Ductal Carcinoma in Situ, Adjuvant chemotherapy, Axillary lymph node staging, Mastectomy, tamoxifen, serotonin reuptake inhibitors, Invasive Breast Cancer, hormone receptor positive breast cancer, ovarian ablation, premenopausal women, surgical management, biopsy of breast tumor, Fine needle aspiration, entinel lymph node, breast preservation, adjuvant radiation therapy, prechemotherapy, Inflammatory Breast Cancer, ovarian failure, Bone scan, lumpectomy, brain metastases, pericardial effusion, aromatase inhibitor, postmenopausal, Palliative care, Guidelines, Stage IV breast cancer disease, Trastuzumab, Breast MRI examination";
-  jQuery("#input_text").focus();
-  jQuery("#input_text").val(text);
-  $("#not_text_error").hide();
-  $("#radio_it_keywords").prop("checked", true);
+  jQuery("#inputText").focus();
+  jQuery("#inputText").val(text);
+  $(".notTextError").hide();
+  $("#radioItKeywords").prop("checked", true);
 }
 
 function showAdvancedOptions() {
-  $("#advanced_options").show();
-  $("#show_advanced_options_link").hide();
-  $("#hide_advanced_options_link").show();
+  $("#advancedOptions").show();
+  $("#showAdvancedOptionsLink").hide();
+  $("#hideAdvancedOptionsLink").show();
 }
 
 function hideAdvancedOptions() {
-  $("#advanced_options").hide();
-  $("#show_advanced_options_link").show();
-  $("#hide_advanced_options_link").hide();
+  $("#advancedOptions").hide();
+  $("#showAdvancedOptionsLink").show();
+  $("#hideAdvancedOptionsLink").hide();
 }
 
 function getHighlightedTerms(data, rowNumber) {
-  var inputText = document.getElementById("input_text").value;
+  var inputText = document.getElementById("inputText").value;
   var newText = new String("");
   // Terms covered
   var terms = new String("");
@@ -99,18 +95,18 @@ function replaceAtPosition(start, end, text, replacement) {
 }
 
 function hideValidationMessages() {
-  $("#sum_weights_error").hide();
-  $("#range_weights_error").hide();
-  $("#max_ontologies_error").hide();
-  $("#not_text_error").hide();
+  $(".sumWeightsError").hide();
+  $(".rangeWeightsError").hide();
+  $(".maxOntologiesError").hide();
+  $(".notTextError").hide();
 }
 
 function getRecommendations() {
   hideValidationMessages();
   var errors = false;
   // Check if the input text field is empty
-  if ($("#input_text").val().length==0) {
-    $("#not_text_error").show();
+  if ($("#inputText").val().length==0) {
+    $(".notTextError").show();
     errors = true;
   }
   // Check sum of weights
@@ -120,41 +116,41 @@ function getRecommendations() {
   var ws = parseFloat($("#input_ws").val());
  
   if (wc + ws + wa + wd != 1) {
-    $("#sum_weights_error").show();
+    $(".sumWeightsError").show();
     errors = true;
   }
   // Check range of weights
   if ((wc < 0)||(wc > 1)||(wa < 0)||(wa > 1)||(wd < 0)||(wd > 1)||(ws < 0)||(ws > 1)) {    
-    $("#range_weights_error").show();
+    $(".rangeWeightsError").show();
     errors = true;
   }
   // Check maximum number of ontologies per set
   var maxOntologies = parseFloat($('#input_max_ontologies').val());
   if ((maxOntologies < 2)||(maxOntologies > 4)) {
-    $("#max_ontologies_error").show();
+    $(".maxOntologiesError").show();
     errors = true;
   }
   
   if (!errors) {
     hideValidationMessages();
-    $('.recommender_spinner').show();
+    $(".recommenderSpinner").show();
     var params = {};
-    params.text = $("#input_text").val();
+    params.text = $("#inputText").val();
     // Input type (text or keywords)
-    if ($('#radio_it_text').is(':checked'))
+    if ($("#radioItText").is(":checked"))
       params.inputType = 1; //text
     else
       params.inputType = 2; //keywords
     // Output type (ontologies or ontology sets)
-    if ($('#radio_ot_single').is(':checked'))
+    if ($("#radio_ot_single").is(":checked"))
       params.outputType = 1; //ontologies
     else
       params.outputType = 2; //ontology sets
     // Weights
-    params.wc = $('#input_wc').val();
-    params.wa = $('#input_wa').val();
-    params.wd = $('#input_wd').val();
-    params.ws = $('#input_ws').val();
+    params.wc = $("#input_wc").val();
+    params.wa = $("#input_wa").val();
+    params.wd = $("#input_wd").val();
+    params.ws = $("#input_ws").val();
     // Maximum number of ontologies per set (only for the "ontology sets" output)
     params.maxOntologiesInSet = $('#input_max_ontologies').val();    
     $.ajax({    
@@ -164,25 +160,25 @@ function getRecommendations() {
       dataType: "jsonp",
       jsonp: "callback",
       success: function(data) {       
-        $('.recommender_spinner').hide();
+        $('.recommenderSpinner').hide();
         if (data) {
           if (data.result.length!=0) {
-            $("#no_results").hide();
-            $('#results').empty();
-            $('#results_header').text('Recommended ontologies');
+            $("#noResults").hide();
+            $("#results").empty();
+            $("#resultsHeader").text("Recommended ontologies");
             
             var table = $('<table id="recommendations" class="zebra" border="1" style="display: inline-block; padding:0px" ></table>'); //create table
-            var header = $('<tr><th>POS.</th>'
-                           + '<th>Ontology</th>'
-                           + '<th>Final score</th>'
-                           + '<th>Coverage <br>score</th>'
-                           + '<th>Acceptance <br>score</th>'
-                           + '<th>Detail <br>score</th>'
-                           + '<th>Specialization <br>score</th>'                           
-                           //+ '<th>Terms</th>'
-                           + '<th>Annotations</th>'
-                           + '<th>Highlight <br>annotations</th>'
-                           + '</th>');
+            var header = $("<tr><th>POS.</th>"
+                           + "<th>Ontology</th>"
+                           + "<th>Final score</th>"
+                           + "<th>Coverage <br>score</th>"
+                           + "<th>Acceptance <br>score</th>"
+                           + "<th>Detail <br>score</th>"
+                           + "<th>Specialization <br>score</th>"                           
+                           //+ "<th>Terms</th>"
+                           + "<th>Annotations</th>"
+                           + "<th>Highlight <br>annotations</th>"
+                           + "</th>");
             table.append(header);
     
             for (var i = 0; i < data.result.length; i++) {
@@ -222,12 +218,12 @@ function getRecommendations() {
                           + '</tr>'; 
               table.append(row); //append row to table
             }
-            $('#results').append(table); //append table to your dom wherever you want
+            $("#results").append(table); //append table to your dom wherever you want
              
             // hide get recommentations button
-            $("#recommender_button").hide();
+            $("#recommenderButton").hide();
             // show edit button
-            $("#edit_button").show();
+            $("#editButton").show();
             // disable radio buttons
             //$('input[name=input_type]').attr("disabled",true);
         
@@ -248,27 +244,27 @@ function getRecommendations() {
                   }            
                   // Terms covered
                   var terms = getHighlightedTerms(data, $rowNumber);                       
-                  $("#recommender_results").empty();
-                  $("#recommender_results").append(terms);
-                  $("#recommender_results").show();
+                  $("#recommenderResults").empty();
+                  $("#recommenderResults").append(terms);
+                  $("#recommenderResults").show();
                 }            
               });
             }
         
             // edit input button - click
-            $("#edit_button").click( function(){        
+            $("#editButton").click( function(){        
               enableEdition()
             });
           }
           else { //no results
-            $("#no_results").show();
+            $("#noResults").show();
           }
         }
       },
       error: function(errorData) {
         $("#results").append("error!");
         $("#results").append(JSON.stringify(errorData));
-        console.log('error', errorData);
+        console.log("error", errorData);
       }
       
     });
@@ -278,9 +274,9 @@ function getRecommendations() {
 // check first checkbox and highlight annotations
   function checkFirst(data) {
      var terms = getHighlightedTerms(data, 0);
-      $("#chk0").prop('checked', true);
-      $("#input_text").hide();
-      $("#recommender_results").empty();
-      $("#recommender_results").append(terms);
-      $("#recommender_results").show();
+      $("#chk0").prop("checked", true);
+      $("#inputText").hide();
+      $("#recommenderResults").empty();
+      $("#recommenderResults").append(terms);
+      $("#recommenderResults").show();
   }
