@@ -199,7 +199,8 @@ function getRecommendations() {
               var specializationScore = data.result[i].specializationResult.normalizedScore * 100;
               
               //create row
-              var row = '<tr><td>' + position + '</td><td>';
+              var row = '<tr class="row"><td>' + position + '</td><td>';            
+
                     
               $.each(data.result[i].ontologyUrisBioPortal, function (j, item) {
                 row += '<a target="_blank" href=' + data.result[i].ontologyUrisBioPortal[j] + '>'
@@ -240,14 +241,16 @@ function getRecommendations() {
                   for (var j = 0; j < data.result.length; j++) {
                     if (j!=$rowNumber) {
                       $("#chk" + j).prop('checked', false);
+                      $("#chk" + j).parents(".row:first").css("background-color", "white");
                     }
                   }            
                   // Terms covered
                   var terms = getHighlightedTerms(data, $rowNumber);                       
                   $("#recommenderResults").empty();
                   $("#recommenderResults").append(terms);
-                  $("#recommenderResults").show();
-                }            
+                  $("#recommenderResults").show();                  
+                  $(this).parents(".row:first").css("background-color", "#e2ebf0");
+                }                
               });
             }
         
@@ -279,4 +282,5 @@ function getRecommendations() {
       $("#recommenderResults").empty();
       $("#recommenderResults").append(terms);
       $("#recommenderResults").show();
+      $("#chk0").parents(".row:first").css("background-color", "#e2ebf0");
   }
