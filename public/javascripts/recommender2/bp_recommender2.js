@@ -9,9 +9,15 @@ jQuery(document).ready(function() {
   $("input[name=output_type]:radio").change(function () {
     enableEdition()});
   $("#input_wc").click(enableEdition);
-  $("#input_ws").click(enableEdition);
   $("#input_wa").click(enableEdition);
+  $("#input_wd").click(enableEdition);
+  $("#input_ws").click(enableEdition);
   $("#input_max_ontologies").click(enableEdition);
+  $("#input_wc").focus(enableEdition);
+  $("#input_wa").focus(enableEdition);
+  $("#input_wd").focus(enableEdition);
+  $("#input_ws").focus(enableEdition);
+  $("#input_max_ontologies").focus(enableEdition);
   $("#advancedOptions").hide();
   $("#hideAdvancedOptionsLink").hide();
   $("#noResults").hide();
@@ -60,19 +66,30 @@ function hideAdvancedOptions() {
   $("#hideAdvancedOptionsLink").hide();
 }
 
+var colors = ["#234979" , "#cc0000", "#339900", "#ff9900"];
 function getHighlightedTerms(data, rowNumber) {
   var inputText = document.getElementById("inputText").value;
   var newText = new String("");
   // Terms covered
   var terms = new String("");
-  var lastPosition = 0;
+  var lastPosition = 0;  
   for (var j = 0; j < data.result[rowNumber].coverageResult.annotations.length; j++) {
     var from = data.result[rowNumber].coverageResult.annotations[j].from-1;
     var to = data.result[rowNumber].coverageResult.annotations[j].to;
     var link = data.result[rowNumber].coverageResult.annotations[j].conceptUri;
-    var term = inputText.substring(from, to);
+    var term = inputText.substring(from, to); 
+    // Color selection - Single ontology
+    if (data.result[rowNumber].ontologyUris.length == 1) {
+      var color = colors[0];
+    }
+    // Color selection - Set of ontologies
+    else {
+      var ontologyUri = data.result[rowNumber].coverageResult.annotations[j].ontologyUri;
+      var index = data.result[rowNumber].ontologyUris.indexOf(ontologyUri);
+      var color = colors[index];
+    }
     
-    var replacement = '<a style="background-color: #FFFF00" target="_blank" href=' + link + '>' + term + '</a>';
+    var replacement = '<a style="font-weight: bold; color:' + color + '" target="_blank" href=' + link + '>' + term + '</a>';
     
     if (from>lastPosition) {
       newText+=inputText.substring(lastPosition, from);
@@ -95,7 +112,7 @@ function replaceAtPosition(start, end, text, replacement) {
 }
 
 function hideValidationMessages() {
-  $(".sumWeightsError").hide();
+  //$(".sumWeightsError").hide();
   $(".rangeWeightsError").hide();
   $(".maxOntologiesError").hide();
   $(".notTextError").hide();
@@ -115,12 +132,16 @@ function getRecommendations() {
   var wd = parseFloat($("#input_wd").val());
   var ws = parseFloat($("#input_ws").val());
  
-  if (wc + ws + wa + wd != 1) {
+  /*if (wc + ws + wa + wd != 1) {
     $(".sumWeightsError").show();
     errors = true;
-  }
+  }*/
   // Check range of weights
-  if ((wc < 0)||(wc > 1)||(wa < 0)||(wa > 1)||(wd < 0)||(wd > 1)||(ws < 0)||(ws > 1)) {    
+  /*if ((wc < 0)||(wc > 1)||(wa < 0)||(wa > 1)||(wd < 0)||(wd > 1)||(ws < 0)||(ws > 1)) {    
+    $(".rangeWeightsError").show();
+    errors = true;
+  }*/
+  if ((wc < 0)||(wa < 0)||(wd < 0)||(ws < 0)) {
     $(".rangeWeightsError").show();
     errors = true;
   }
@@ -167,9 +188,16 @@ function getRecommendations() {
             $("#results").empty();
             $("#resultsHeader").text("Recommended ontologies");
             
+            if (params.outputType == 1) {
+              var ontologyHeader = "Ontology";
+            }
+            else {
+              ontologyHeader = "Ontologies";
+            }
+            
             var table = $('<table id="recommendations" class="zebra" border="1" style="display: inline-block; padding:0px" ></table>'); //create table
             var header = $("<tr><th>POS.</th>"
-                           + "<th>Ontology</th>"
+                           + "<th>" + ontologyHeader +"</th>"
                            + "<th>Final score</th>"
                            + "<th>Coverage <br>score</th>"
                            + "<th>Acceptance <br>score</th>"
@@ -200,15 +228,21 @@ function getRecommendations() {
               
               //create row
               var row = '<tr class="row"><td>' + position + '</td><td>';            
-
-                    
-              $.each(data.result[i].ontologyUrisBioPortal, function (j, item) {
-                row += '<a target="_blank" href=' + data.result[i].ontologyUrisBioPortal[j] + '>'
-                + data.result[i].ontologyNames[j] + '</a> (' + data.result[i].ontologyAcronyms[j] + ')<br />'});
+              
+              $.each(data.result[i].ontologyUrisBioPortal, function (j, item) {                
+                if (params.outputType == 1) {
+                  var ontologyLinkStyle = "";
+                }
+                else {
+                  var ontologyLinkStyle = 'style="color: ' + colors[j] + '"';
+                }
+                
+                row += '<a ' + ontologyLinkStyle + 'title= "' + data.result[i].ontologyNames[j] + '" target="_blank" href=' + data.result[i].ontologyUrisBioPortal[j] + '>'
+                + data.result[i].ontologyAcronyms[j] + '</a><br />'});
               
               row += "</td>";
   
-              row += '<td><div style="width:120px"><div style="text-align:left;width:' + finalScore.toFixed(0) + '%;background-image:url(/images/new/gradient_120px_2.png);border-style:solid;border-width:1px;border-color:#234979">' + finalScore.toFixed(1) + '</div></div>' + '</td>'
+              row += '<td><div style="width:120px"><div style="text-align:left;width:' + finalScore.toFixed(0) + '%;color:#ccc;background-color:#234979;border-style:solid;border-width:1px;border-color:#234979">' + finalScore.toFixed(1) + '</div></div>' + '</td>'
                           + '<td><div style="width:120px"><div style="text-align:left;width:' + coverageScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + coverageScore.toFixed(1) + '</div></div>' + '</td>'
                           + '<td><div style="width:120px"><div style="text-align:left;width:' + acceptanceScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + acceptanceScore.toFixed(1) + '</div></div>' + '</td>'
                           + '<td><div style="width:120px"><div style="text-align:left;width:' + detailScore.toFixed(0) + '%;background-color:#8cabd6;border-style:solid;border-width:1px;border-color:#3e76b6">' + detailScore.toFixed(1) + '</div></div>' + '</td>'

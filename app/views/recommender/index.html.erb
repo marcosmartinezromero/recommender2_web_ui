@@ -30,10 +30,10 @@
     <div id="advancedOptions">
       <div class="optionsBox">
 	<h3>Weights configuration</h3>
-	<label>Coverage</label><input type="number" id="input_wc" min="0.1" max="1" step="0.05" value="0.5">	    
-	<label>Acceptance</label><input type="number" id="input_wa" min="0" max="1" step="0.05" value="0.2">
-	<label>Knowledge Detail</label><input type="number" id="input_wd" min="0" max="1" step="0.05" value="0.15">
-	<label>Specialization</label><input type="number" id="input_ws" min="0" max="1" step="0.05" value="0.15">
+	<label>Coverage</label><input type="number" id="input_wc" min="0" step="1" value="5">	    
+	<label>Acceptance</label><input type="number" id="input_wa" min="0" step="1" value="2">
+	<label>Knowledge Detail</label><input type="number" id="input_wd" min="0" step="1" value="2">
+	<label>Specialization</label><input type="number" id="input_ws" min="0" step="1" value="1">
       </div>
       <div class="optionsBox">
 	<h3>Ontology sets</h3>
@@ -69,8 +69,8 @@
     <span class="recommenderSpinner"><img src="/images/spinners/spinner_000000_16px.gif" style="vertical-align: text-bottom;"></span>
     <br /><br />
     <span class="notTextError">Please paste some text or keywords to use in calculating ontology recommendations<br></span>
-    <span class="sumWeightsError">The sum of the weights must be 1<br></span>
-    <span class="rangeWeightsError">All the weights must be between 0 and 1<br></span>
+    <!--<span class="sumWeightsError">The sum of the weights must be 1<br></span>-->
+    <span class="rangeWeightsError">All the weights must be higher than 0<br></span>
     <span class="maxOntologiesError">The maximum ontologies per set must be between 2 and 4<br></span>
     <br />
     <h2 id="resultsHeader"></h2>
